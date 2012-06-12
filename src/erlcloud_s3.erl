@@ -569,7 +569,7 @@ make_link(Expire_time, BucketName, Key, Config)
     Expires = integer_to_list(Expire_time + Datetime),
     To_sign = lists:flatten(["GET\n\n\n", Expires, "\n/", BucketName, "/", Key]),
     Sig = base64:encode(crypto:sha_mac(Config#aws_config.secret_access_key, To_sign)),
-    Host = lists:flatten(["http://", BucketName, ".", Config#aws_config.s3_host]),
+    Host = lists:flatten(["https://", BucketName, ".", Config#aws_config.s3_host]),
     URI = lists:flatten(["/", Key, "?AWSAccessKeyId=", erlcloud_http:url_encode(Config#aws_config.access_key_id), "&Signature=", erlcloud_http:url_encode(Sig), "&Expires=", Expires]),
     {list_to_integer(Expires), 
      binary_to_list(erlang:iolist_to_binary(Host)),
